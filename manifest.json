@@ -1,7 +1,7 @@
 {
   "name": "Happy Kids Learning Game",
   "short_name": "KidsGame",
-  "start_url": ".",
+  "start_url": "/kids-game/",   <-- MUST match your repo
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff4081",
