@@ -1,7 +1,10 @@
 self.addEventListener("install", e => {
   e.waitUntil(
     caches.open("kids-game").then(cache => {
-      return cache.addAll(["./", "./index.html"]);
+      return cache.addAll([
+        "/kids-game/",
+        "/kids-game/index.html"
+      ]);
     })
   );
 });
