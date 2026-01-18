@@ -100,10 +100,10 @@ footer {
   </div>
 
   <div class="board" id="board">
-    <div class="card red" onclick="tap('🐶','dog')">🐶</div>
-    <div class="card blue" onclick="tap('🐱','cat')">🐱</div>
-    <div class="card green" onclick="tap('🐮','cow')">🐮</div>
-    <div class="card yellow" onclick="tap('🦁','lion')">🦁</div>
+    <div class="card red" onclick="tap('dog')">🐶</div>
+    <div class="card blue" onclick="tap('cat')">🐱</div>
+    <div class="card green" onclick="tap('cow')">🐮</div>
+    <div class="card yellow" onclick="tap('lion')">🦁</div>
   </div>
 
   <div class="controls">
@@ -114,16 +114,15 @@ footer {
   <footer>Tap & learn safely 😊</footer>
 </div>
 
-<audio id="sound"></audio>
-
 <script>
+// Global variables
 let stars = 0;
 let level = 1;
 let locked = false;
 
 const starsEl = document.getElementById("stars");
 const levelEl = document.getElementById("level");
-const sound = document.getElementById("sound");
+const sound = new Audio();
 
 const sounds = {
   dog: "https://actions.google.com/sounds/v1/animals/dog_bark.ogg",
@@ -132,14 +131,15 @@ const sounds = {
   lion: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg"
 };
 
-function tap(icon, animal) {
+// Tap function
+function tap(animal) {
   if (locked) return;
 
   stars++;
   starsEl.textContent = stars;
 
   sound.src = sounds[animal];
-  sound.play();
+  sound.play().catch(e => console.log("Audio blocked:", e));
 
   if (stars % 10 === 0) {
     level++;
@@ -150,13 +150,25 @@ function tap(icon, animal) {
   if (navigator.vibrate) navigator.vibrate(50);
 }
 
+// Learning mode
 function learningMode() {
-  alert("📚 Learning Mode:\nTap animals to hear sounds.\nNumbers & ABC coming next!");
+  alert("📚 Learning Mode:\nTap animals to hear sounds.");
 }
 
+// Parent lock
 function parentLock() {
   const code = prompt("Parent code?");
   if (code === "1234") {
     locked = !locked;
     alert(locked ? "🔒 Locked" : "🔓 Unlocked");
   }
+}
+
+// Register service worker for offline support
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/kids-game/sw.js").catch(console.log);
+}
+</script>
+
+</body>
+</html>
