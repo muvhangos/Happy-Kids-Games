@@ -1,9 +1,10 @@
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open("kids-game").then(cache => {
+    caches.open("kids-game-cache").then(cache => {
       return cache.addAll([
         "/kids-game/",
-        "/kids-game/index.html"
+        "/kids-game/index.html",
+        "/kids-game/manifest.json"
       ]);
     })
   );
