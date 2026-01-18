@@ -1,0 +1,15 @@
+{
+  "name": "Happy Kids Learning Game",
+  "short_name": "KidsGame",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff4081",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/616/616408.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

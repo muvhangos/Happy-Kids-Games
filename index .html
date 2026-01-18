@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🌈 Happy Kids Learning Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Comic Sans MS, Arial;
+}
+
+.game {
+  width: 330px;
+  height: 600px;
+  background: white;
+  border-radius: 30px;
+  padding: 15px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+h1 {
+  color: #ff4081;
+  font-size: 20px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  height: 120px;
+  border-radius: 20px;
+  font-size: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.card:active {
+  transform: scale(0.9);
+}
+
+.red { background:#ff5252 }
+.blue { background:#448aff }
+.green { background:#4caf50 }
+.yellow { background:#ffeb3b }
+
+.controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  background: #ff4081;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+footer {
+  font-size: 11px;
+  margin-top: 5px;
+  color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+  <h1>🌈 Happy Kids Learning</h1>
+
+  <div class="stats">
+    <div>⭐ Stars: <span id="stars">0</span></div>
+    <div>🎁 Level: <span id="level">1</span></div>
+  </div>
+
+  <div class="board" id="board">
+    <div class="card red" onclick="tap('🐶','dog')">🐶</div>
+    <div class="card blue" onclick="tap('🐱','cat')">🐱</div>
+    <div class="card green" onclick="tap('🐮','cow')">🐮</div>
+    <div class="card yellow" onclick="tap('🦁','lion')">🦁</div>
+  </div>
+
+  <div class="controls">
+    <button onclick="learningMode()">📚 Learn</button>
+    <button onclick="parentLock()">🔒 Parent</button>
+  </div>
+
+  <footer>Tap & learn safely 😊</footer>
+</div>
+
+<audio id="sound"></audio>
+
+<script>
+let stars = 0;
+let level = 1;
+let locked = false;
+
+const starsEl = document.getElementById("stars");
+const levelEl = document.getElementById("level");
+const sound = document.getElementById("sound");
+
+const sounds = {
+  dog: "https://actions.google.com/sounds/v1/animals/dog_bark.ogg",
+  cat: "https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg",
+  cow: "https://actions.google.com/sounds/v1/animals/cow.ogg",
+  lion: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg"
+};
+
+function tap(icon, animal) {
+  if (locked) return;
+
+  stars++;
+  starsEl.textContent = stars;
+
+  sound.src = sounds[animal];
+  sound.play();
+
+  if (stars % 10 === 0) {
+    level++;
+    levelEl.textContent = level;
+    alert("🎉 Level Up!");
+  }
+
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+function learningMode() {
+  alert("📚 Learning Mode:\nTap animals to hear sounds.\nNumbers & ABC coming next!");
+}
+
+function parentLock() {
+  const code = prompt("Parent code?");
+  if (code === "1234") {
+    locked = !locked;
+    alert(locked ? "🔒 Locked" : "🔓 Unlocked");
+  }
