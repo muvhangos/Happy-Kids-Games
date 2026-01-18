@@ -27,16 +27,9 @@ body {
   text-align: center;
 }
 
-h1 {
-  color: #ff4081;
-  font-size: 20px;
-}
+h1 { color: #ff4081; font-size: 20px; }
 
-.stats {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-}
+.stats { display: flex; justify-content: space-between; font-size: 14px; }
 
 .board {
   display: grid;
@@ -56,20 +49,14 @@ h1 {
   transition: transform 0.1s;
 }
 
-.card:active {
-  transform: scale(0.9);
-}
+.card:active { transform: scale(0.9); }
 
 .red { background:#ff5252 }
 .blue { background:#448aff }
 .green { background:#4caf50 }
 .yellow { background:#ffeb3b }
 
-.controls {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
+.controls { margin-top: 10px; display: flex; justify-content: space-between; }
 
 button {
   border: none;
@@ -81,11 +68,7 @@ button {
   cursor: pointer;
 }
 
-footer {
-  font-size: 11px;
-  margin-top: 5px;
-  color: #777;
-}
+footer { font-size: 11px; margin-top: 5px; color: #777; }
 </style>
 </head>
 
@@ -123,7 +106,7 @@ let locked = false;
 const starsEl = document.getElementById("stars");
 const levelEl = document.getElementById("level");
 
-// Sounds preloaded for instant playback
+// Preload all sounds
 const sounds = {
   dog: "https://actions.google.com/sounds/v1/animals/dog_bark.ogg",
   cat: "https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg",
@@ -170,7 +153,7 @@ function parentLock() {
   }
 }
 
-// Register service worker for offline support
+// Register service worker
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/kids-game/sw.js").catch(console.log);
 }
