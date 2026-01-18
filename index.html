@@ -122,14 +122,19 @@ let locked = false;
 
 const starsEl = document.getElementById("stars");
 const levelEl = document.getElementById("level");
-const sound = new Audio();
 
+// Sounds preloaded for instant playback
 const sounds = {
   dog: "https://actions.google.com/sounds/v1/animals/dog_bark.ogg",
   cat: "https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg",
   cow: "https://actions.google.com/sounds/v1/animals/cow.ogg",
   lion: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg"
 };
+
+const preloadedSounds = {};
+for (let key in sounds) {
+  preloadedSounds[key] = new Audio(sounds[key]);
+}
 
 // Tap function
 function tap(animal) {
@@ -138,7 +143,8 @@ function tap(animal) {
   stars++;
   starsEl.textContent = stars;
 
-  sound.src = sounds[animal];
+  const sound = preloadedSounds[animal];
+  sound.currentTime = 0;
   sound.play().catch(e => console.log("Audio blocked:", e));
 
   if (stars % 10 === 0) {
