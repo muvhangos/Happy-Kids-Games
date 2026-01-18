@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>🌈 Happy Kids Learning Game</title>
+<title>🌈 Kids Fun & Learn Game</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="manifest.json">
 
@@ -18,8 +18,8 @@ body {
 }
 
 .game {
-  width: 330px;
-  height: 600px;
+  width: 360px;
+  min-height: 640px;
   background: white;
   border-radius: 30px;
   padding: 15px;
@@ -27,19 +27,23 @@ body {
   text-align: center;
 }
 
-h1 { color: #ff4081; font-size: 20px; }
+h1 { color: #ff4081; font-size: 22px; margin: 5px 0; }
 
-.stats { display: flex; justify-content: space-between; font-size: 14px; }
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
 
 .board {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 15px;
 }
 
 .card {
-  height: 120px;
+  height: 100px;
   border-radius: 20px;
   font-size: 42px;
   display: flex;
@@ -55,8 +59,14 @@ h1 { color: #ff4081; font-size: 20px; }
 .blue { background:#448aff }
 .green { background:#4caf50 }
 .yellow { background:#ffeb3b }
+.purple { background:#9c27b0 }
+.orange { background:#ff9800 }
 
-.controls { margin-top: 10px; display: flex; justify-content: space-between; }
+.controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
 
 button {
   border: none;
@@ -68,18 +78,23 @@ button {
   cursor: pointer;
 }
 
-footer { font-size: 11px; margin-top: 5px; color: #777; }
+footer {
+  font-size: 11px;
+  margin-top: 5px;
+  color: #777;
+}
 </style>
 </head>
 
 <body>
 
 <div class="game">
-  <h1>🌈 Happy Kids Learning</h1>
+  <h1>🌈 Kids Fun & Learn</h1>
 
   <div class="stats">
     <div>⭐ Stars: <span id="stars">0</span></div>
     <div>🎁 Level: <span id="level">1</span></div>
+    <div>🏆 Badges: <span id="badges">0</span></div>
   </div>
 
   <div class="board" id="board">
@@ -87,6 +102,12 @@ footer { font-size: 11px; margin-top: 5px; color: #777; }
     <div class="card blue" onclick="tap('cat')">🐱</div>
     <div class="card green" onclick="tap('cow')">🐮</div>
     <div class="card yellow" onclick="tap('lion')">🦁</div>
+    <div class="card purple" onclick="tap('sheep')">🐑</div>
+    <div class="card orange" onclick="tap('pig')">🐷</div>
+    <div class="card red" onclick="tap('monkey')">🐵</div>
+    <div class="card blue" onclick="tap('elephant')">🐘</div>
+    <div class="card green" onclick="tap('frog')">🐸</div>
+    <div class="card yellow" onclick="tap('owl')">🦉</div>
   </div>
 
   <div class="controls">
@@ -94,28 +115,34 @@ footer { font-size: 11px; margin-top: 5px; color: #777; }
     <button onclick="parentLock()">🔒 Parent</button>
   </div>
 
-  <footer>Tap & learn safely 😊</footer>
+  <footer>Tap animals & numbers daily for rewards!</footer>
 </div>
 
 <script>
-// Global variables
-let stars = 0;
-let level = 1;
-let locked = false;
+// Game variables
+let stars = 0, level = 1, badges = 0, locked = false;
 
 const starsEl = document.getElementById("stars");
 const levelEl = document.getElementById("level");
+const badgesEl = document.getElementById("badges");
 
-// Preload all sounds
+// Sounds for animals
 const sounds = {
   dog: "https://actions.google.com/sounds/v1/animals/dog_bark.ogg",
   cat: "https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg",
   cow: "https://actions.google.com/sounds/v1/animals/cow.ogg",
-  lion: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg"
+  lion: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg",
+  sheep: "https://actions.google.com/sounds/v1/animals/sheep.ogg",
+  pig: "https://actions.google.com/sounds/v1/animals/pig.ogg",
+  monkey: "https://actions.google.com/sounds/v1/animals/monkey.ogg",
+  elephant: "https://actions.google.com/sounds/v1/animals/elephant.ogg",
+  frog: "https://actions.google.com/sounds/v1/animals/frog.ogg",
+  owl: "https://actions.google.com/sounds/v1/animals/owl.ogg"
 };
 
+// Preload
 const preloadedSounds = {};
-for (let key in sounds) {
+for(let key in sounds) {
   preloadedSounds[key] = new Audio(sounds[key]);
 }
 
@@ -130,33 +157,53 @@ function tap(animal) {
   sound.currentTime = 0;
   sound.play().catch(e => console.log("Audio blocked:", e));
 
-  if (stars % 10 === 0) {
+  // Level up every 10 stars
+  if(stars % 10 === 0) {
     level++;
     levelEl.textContent = level;
     alert("🎉 Level Up!");
   }
 
-  if (navigator.vibrate) navigator.vibrate(50);
+  // Badge reward every 25 stars
+  if(stars % 25 === 0) {
+    badges++;
+    badgesEl.textContent = badges;
+    alert("🏆 Badge Earned!");
+  }
+
+  if(navigator.vibrate) navigator.vibrate(50);
 }
 
 // Learning mode
 function learningMode() {
-  alert("📚 Learning Mode:\nTap animals to hear sounds.");
+  alert("📚 Learning Mode: Tap animals to hear their sounds.");
 }
 
 // Parent lock
 function parentLock() {
   const code = prompt("Parent code?");
-  if (code === "1234") {
+  if(code==="1234") {
     locked = !locked;
-    alert(locked ? "🔒 Locked" : "🔓 Unlocked");
+    alert(locked?"🔒 Locked":"🔓 Unlocked");
   }
 }
 
-// Register service worker
-if ("serviceWorker" in navigator) {
+// Service worker
+if("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/kids-game/sw.js").catch(console.log);
 }
+
+// Optional: daily joke/number reward
+function dailyReward() {
+  const today = new Date().toDateString();
+  if(localStorage.getItem("lastReward")!==today) {
+    stars += 5;
+    starsEl.textContent = stars;
+    localStorage.setItem("lastReward", today);
+    alert("🎁 Daily Reward: +5 Stars!");
+  }
+}
+dailyReward();
 </script>
 
 </body>
